@@ -1,0 +1,120 @@
+aiverse/
+├─ pages/
+│  ├─ index.js
+│  ├─ login.js
+│  ├─ dashboard.js
+│  └─ _app.js
+├─ components/
+│  ├─ Navbar.js
+│  └─ CourseCard.js
+├─ lib/
+│  └─ firebase.js
+├─ styles/
+│  └─ globals.css
+├─ .gitignore
+├─ package.json
+└─ README.md
+{
+  "name": "aiverse",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "firebase": "^10.0.0"
+  }
+}
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+import Navbar from "../components/Navbar";
+import CourseCard from "../components/CourseCard";
+
+export default function Home() {
+  return (
+    <>
+      <Navbar />
+      <main style={{ padding: "2rem" }}>
+        <h1>Learn AI. Anywhere. Any Language.</h1>
+        <p>Start any AI course with a 4-day free trial.</p>
+
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <CourseCard title="AI Basics" />
+          <CourseCard title="AI Tools" />
+        </div>
+      </main>
+    </>
+  );
+}
+import { auth } from "../lib/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+export default function Login() {
+  const login = async () => {
+    await signInWithEmailAndPassword(
+      auth,
+      "test@email.com",
+      "password123"
+    );
+    alert("Logged in");
+  };
+
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h2>Login to AIverse</h2>
+      <button onClick={login}>Login</button>
+    </div>
+  );
+}
+export default function Dashboard() {
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h2>Your Courses</h2>
+      <p>Trial Days Left: 4</p>
+      <button>Unlock for ₹99</button>
+    </div>
+  );
+}
+import Link from "next/link";
+
+export default function Navbar() {
+  return (
+    <nav style={{ padding: "1rem", borderBottom: "1px solid #ddd" }}>
+      <strong>AIverse</strong> |{" "}
+      <Link href="/login">Login</Link>
+    </nav>
+  );
+}
+export default function CourseCard({ title }) {
+  return (
+    <div style={{ border: "1px solid #ccc", padding: "1rem" }}>
+      <h3>{title}</h3>
+      <p>4-day free trial</p>
+      <button>Start Trial</button>
+    </div>
+  );
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+npm install
+npm run dev
